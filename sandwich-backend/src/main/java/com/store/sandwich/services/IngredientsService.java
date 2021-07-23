@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IngredientsService {
 
-    List<Ingredients> getIngredientByIngredientType(String ingredientName);
+    List<Ingredients> getIngredientsByIngredientType(String ingredientName);
+
+    List<Ingredients> getIngredients();
 
     void updateStock(Integer id, UpdateIngredientQuantityRequest request);
 

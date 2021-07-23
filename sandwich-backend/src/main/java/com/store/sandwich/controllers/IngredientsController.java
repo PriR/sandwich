@@ -1,7 +1,6 @@
 package com.store.sandwich.controllers;
 
 import com.store.sandwich.dtos.*;
-import com.store.sandwich.requests.SandwichRequest;
 import com.store.sandwich.requests.UpdateIngredientQuantityRequest;
 import com.store.sandwich.services.IngredientsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -18,10 +18,13 @@ public class IngredientsController {
     @Autowired
     private IngredientsService ingredientsService;
 
-    // return all ingredient properties
+    // return all ingredients or ingredient per type
     @GetMapping
-    public List<Ingredients> getIngredient(@RequestParam("types") String ingredientType) {
-        return ingredientsService.getIngredientByIngredientType(ingredientType);
+    public List<Ingredients> getIngredient(@RequestParam(required = false, name = "types") Optional<String> ingredientType) {
+        if (ingredientType.isPresent()) {
+            return ingredientsService.getIngredientsByIngredientType(ingredientType.get());
+        }
+        return ingredientsService.getIngredients();
     }
 
     // update ingredient stock by the quantity sent on request
@@ -33,7 +36,7 @@ public class IngredientsController {
     }
 
     // return stock per requested ingredient id
-    @GetMapping("{id}")
+    @GetMapping("/stock/{id}")
     public Integer verifyStock(@PathVariable("id") Integer id) {
         return ingredientsService.verifyStock(id);
     }

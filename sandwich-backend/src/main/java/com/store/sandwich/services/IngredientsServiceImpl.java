@@ -15,8 +15,13 @@ public class IngredientsServiceImpl implements IngredientsService {
     private IngredientsRepository ingredientsRepository;
 
     @Override
-    public List<Ingredients> getIngredientByIngredientType(String type) {
+    public List<Ingredients> getIngredientsByIngredientType(String type) {
         return ingredientsRepository.findAllByIngredientType(type);
+    }
+
+    @Override
+    public List<Ingredients> getIngredients() {
+        return ingredientsRepository.findAll();
     }
 
     @Override
