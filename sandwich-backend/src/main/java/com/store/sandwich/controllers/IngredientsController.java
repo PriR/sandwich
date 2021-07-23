@@ -1,12 +1,13 @@
 package com.store.sandwich.controllers;
 
 import com.store.sandwich.dtos.*;
+import com.store.sandwich.requests.SandwichRequest;
+import com.store.sandwich.requests.UpdateIngredientQuantityRequest;
 import com.store.sandwich.services.IngredientsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,9 +18,24 @@ public class IngredientsController {
     @Autowired
     private IngredientsService ingredientsService;
 
-    @GetMapping("/{ingredientName}")
-    public List<Ingredient> getIngredient(@PathVariable("ingredientName") String ingredientName) {
-        return ingredientsService.getIngredient(ingredientName);
+    // return all ingredient properties
+    @GetMapping
+    public List<Ingredients> getIngredient(@RequestParam("types") String ingredientType) {
+        return ingredientsService.getIngredientByIngredientType(ingredientType);
+    }
+
+    // update ingredient stock by the quantity sent on request
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity updateStock(@PathVariable Integer id, @RequestBody UpdateIngredientQuantityRequest request) {
+        ingredientsService.updateStock(id, request);
+        return ResponseEntity.ok().build();
+    }
+
+    // return stock per requested ingredient id
+    @GetMapping("{id}")
+    public Integer verifyStock(@PathVariable("id") Integer id) {
+        return ingredientsService.verifyStock(id);
     }
 
 }

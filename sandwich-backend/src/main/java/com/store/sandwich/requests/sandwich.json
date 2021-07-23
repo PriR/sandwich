@@ -1,0 +1,13 @@
+{
+  "breadType": "White",
+  "breadSize": "Double",
+  "vegetables": [
+    "Carrot", "Tomato"
+  ],
+  "sauces": [
+    "Mayonnaise", "Ketchup"
+  ],
+  "toppings": [
+    "Ham", "Pork"
+  ]
+}

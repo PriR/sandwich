@@ -1,68 +1,33 @@
 package com.store.sandwich.services;
 
-import com.store.sandwich.converters.ConverterIngredient;
-import com.store.sandwich.dtos.*;
-import com.store.sandwich.repository.*;
+import com.store.sandwich.dtos.Ingredients;
+import com.store.sandwich.repository.IngredientsRepository;
+import com.store.sandwich.requests.UpdateIngredientQuantityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class IngredientsServiceImpl implements IngredientsService {
 
-    // todo: colocar em strategy ao inves de switch case
-
     @Autowired
-    private BreadSizeRepository breadSizeRepository;
-
-    @Autowired
-    private BreadTypeRepository breadTypeRepository;
-
-    @Autowired
-    private SaucesRepository saucesRepository;
-
-    @Autowired
-    private VegetablesRepository vegetablesRepository;
-
-    @Autowired
-    private ToppingsRepository toppingsRepository;
-
-    @Autowired
-    private ConverterIngredient converterIngredient;
+    private IngredientsRepository ingredientsRepository;
 
     @Override
-    public List<Ingredient> getIngredient(String ingredientName) {
-        List<Ingredient> ingredients = new ArrayList<>();
-        switch (ingredientName) {
-            case "toppings": {
-                ingredients = converterIngredient.toIngredient(toppingsRepository.findAll());
-                break;
-            }
-            case "breadSize": {
-                ingredients = converterIngredient.toIngredient(breadSizeRepository.findAll());
-                break;
-            }
-            case "breadType": {
-                ingredients = converterIngredient.toIngredient(breadTypeRepository.findAll());
-                break;
-            }
-            case "vegetables": {
-                ingredients = converterIngredient.toIngredient(vegetablesRepository.findAll());
-                break;
-            }
-            case "sauces": {
-                ingredients = converterIngredient.toIngredient(saucesRepository.findAll());
-                break;
-            }
-        }
-        return ingredients;
+    public List<Ingredients> getIngredientByIngredientType(String type) {
+        return ingredientsRepository.findAllByIngredientType(type);
     }
 
+    @Override
+    public void updateStock(Integer id, UpdateIngredientQuantityRequest request) {
+        Integer newQuantity = request.getQuantity();
+        ingredientsRepository.updateQuantity(id, newQuantity);
+    }
 
-    //    @Override
-//    public Double verifyToppingsStock(Sandwich sandwich) {
-//        return null;
-//    }
+    @Override
+    public Integer verifyStock(Integer id) {
+        return ingredientsRepository.findById(id).get().getQuantity();
+    }
+
 }

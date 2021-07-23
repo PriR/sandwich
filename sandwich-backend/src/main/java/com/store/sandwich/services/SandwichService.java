@@ -1,38 +1,18 @@
 package com.store.sandwich.services;
 
-import com.store.sandwich.dtos.*;
-import com.store.sandwich.requests.RequestSandwich;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.store.sandwich.requests.SandwichRequest;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
-@Service
-@RequiredArgsConstructor
-public class SandwichService {
+import java.util.Map;
 
-    public Double calculatePrice(RequestSandwich requestSandwich) {
-        Sandwich sandwich = new SandwichImpl();
-//        Double bread = new Bread(sandwich).mapPriceProductComposition(requestSandwich);
-//        Double sauces = new Sauces(sandwich).mapPriceProductComposition(requestSandwich);
-//        Double vegetables = new Vegetables(sandwich).mapPriceProductComposition(requestSandwich);
-//        Double toppingPricePer100 = new ToppingPricePer100(sandwich).mapPriceProductComposition(requestSandwich);
+public interface SandwichService {
 
-//        return sandwich.mapPriceProductComposition(requestSandwich);
+    void orderSandwich(SandwichRequest sandwichRequest);
 
-        return 1.0;
-    }
-
-    public Double initialStock(Sandwich product) {
-        return Double.MIN_NORMAL;
-    }
-
-
-//    @Override
-//    public Double addPriceProductComposition(RequestSandwich requestSandwich, Double currentPrice) {
-//        return null;
-//    }
+//    public abstract Double addPriceProductComposition(RequestSandwich requestSandwich, Double currentPrice);
 //
-//    @Override
-//    public Double verifyStock(Sandwich sandwich) {
-//        return null;
-//    }
+//    public abstract Double verifyStock(Sandwich sandwich);
+
+//    Map<String, Double> mapPriceProductComposition(RequestSandwich requestSandwich);
+
 }

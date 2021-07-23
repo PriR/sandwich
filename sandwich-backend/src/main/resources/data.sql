@@ -1,75 +1,55 @@
-DROP TABLE IF EXISTS toppings;
-DROP TABLE IF EXISTS bread_size;
-DROP TABLE IF EXISTS bread_type;
-DROP TABLE IF EXISTS sauces;
-DROP TABLE IF EXISTS vegetables;
-
-CREATE TABLE vegetables
+------ ingredients ------
+DROP TABLE IF EXISTS ingredients;
+CREATE TABLE ingredients
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(20)   NOT NULL,
-    price    NUMERIC(4, 2) NOT NULL,
-    quantity INT DEFAULT NULL
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    name            VARCHAR(20)   NOT NULL,
+    price           NUMERIC(4, 2) NOT NULL,
+    quantity        INT           NOT NULL,
+    ingredient_type VARCHAR(20)   NOT NULL
 );
 
-INSERT INTO vegetables (name, price, quantity)
-VALUES ('Lettuce', 0.3, 10),
-       ('Tomato', 0.4, 10),
-       ('Carrot', 0.5, 10);
+-- vegetables
+INSERT INTO ingredients (name, price, quantity, ingredient_type)
+VALUES ('Lettuce', 0.3, 10, 'vegetables'),
+       ('Tomato', 0.4, 10, 'vegetables'),
+       ('Carrot', 0.5, 10, 'vegetables');
 
-CREATE TABLE sauces
+-- sauces
+INSERT INTO ingredients (name, price, quantity, ingredient_type)
+VALUES ('Mayonnaise', 0.2, 10, 'sauces'),
+       ('Ketchup', 0.2, 10, 'sauces'),
+       ('Bearnaise', 0.4, 10, 'sauces');
+
+-- bread type
+INSERT INTO ingredients (name, price, quantity, ingredient_type)
+VALUES ('White', 1.0, 10, 'bread_type'),
+       ('Brown', 1.0, 10, 'bread_type'),
+       ('Special', 1.2, 10, 'bread_type');
+
+-- toppings
+INSERT INTO ingredients (name, price, quantity, ingredient_type)
+VALUES ('Cheese', 1.0, 40, 'toppings'),
+       ('Ham', 1.1, 50, 'toppings'),
+       ('Pork', 1.2, 35, 'toppings'),
+       ('Tuna', 1.3, 25, 'toppings'),
+       ('Meat', 1.4, 30, 'toppings');
+
+-- bread size
+INSERT INTO ingredients (name, price, quantity, ingredient_type)
+VALUES ('Small', 0.75, 10, 'bread_size'),
+       ('Normal', 1.0, 10, 'bread_size'),
+       ('Double', 1.8, 10, 'bread_size');
+
+
+------ sandwiches ------
+DROP TABLE IF EXISTS sandwiches;
+CREATE TABLE sandwiches
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(20)   NOT NULL,
-    price    NUMERIC(4, 2) NOT NULL,
-    quantity INT DEFAULT NULL
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    bread_type  VARCHAR(20) NULL,
+    bread_size VARCHAR(20) NULL,
+    vegetables VARCHAR(255) NULL,
+    sauces     VARCHAR(255) NULL,
+    toppings   VARCHAR(255) NULL
 );
-
-INSERT INTO sauces (name, price, quantity)
-VALUES ('Mayonnaise', 0.2, 10),
-       ('Ketchup', 0.2, 10),
-       ('Bearnaise', 0.4, 10);
-
-CREATE TABLE bread_type
-(
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(20)   NOT NULL,
-    price    NUMERIC(4, 2) NOT NULL,
-    quantity INT DEFAULT NULL
-);
-
-INSERT INTO bread_type (name, price, quantity)
-VALUES ('White', 1.0, 10),
-       ('Brown', 1.0, 10),
-       ('Special', 1.2, 10);
-
-
-CREATE TABLE toppings
-(
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(20)   NOT NULL,
-    price    NUMERIC(4, 2) NOT NULL,
-    quantity INT DEFAULT NULL
-);
-
--- quantity per gr, multiply price and quantity per standard of bread size
-INSERT INTO toppings (name, price, quantity)
-VALUES ('Cheese', 1.0, 40),
-       ('Ham', 1.1, 50),
-       ('Pork', 1.2, 35),
-       ('Tuna', 1.3, 25),
-       ('Meat', 1.4, 30);
-
-
-CREATE TABLE bread_size
-(
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(20)   NOT NULL,
-    price    NUMERIC(4, 2) NOT NULL,
-    quantity INT DEFAULT NULL
-);
-
-INSERT INTO bread_size (name, price, quantity)
-VALUES ('Small', 0.75, 10),
-       ('Normal', 1.0, 10),
-       ('Double', 1.8, 10);

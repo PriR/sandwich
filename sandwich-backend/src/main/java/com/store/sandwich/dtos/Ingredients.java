@@ -1,6 +1,5 @@
 package com.store.sandwich.dtos;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,11 +7,11 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Bread_type")
+@Table(name="ingredients")
 @Setter
 @Getter
 @ToString
-public class BreadType extends Ingredient {
+public class Ingredients {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,4 +19,6 @@ public class BreadType extends Ingredient {
     private String name;
     private Double price;
     private Integer quantity;
+    @Column(name="ingredient_type")
+    private String ingredientType;
 }

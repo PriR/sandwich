@@ -1,9 +1,9 @@
 package com.store.sandwich.controllers;
 
-import com.store.sandwich.dtos.Sandwich;
-import com.store.sandwich.requests.RequestSandwich;
+import com.store.sandwich.requests.SandwichRequest;
 import com.store.sandwich.services.SandwichService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,22 +13,14 @@ public class SandwichController {
     @Autowired
     private SandwichService sandwichService;
 
-    @PostMapping("/sell")
-    public Double sell(@RequestBody RequestSandwich requestSandwich) {
-        // verify
+    @PostMapping
+    public ResponseEntity orderSandwich(@RequestBody SandwichRequest sandwichRequest) {
 
-        // calculate price
-        return sandwichService.calculatePrice(requestSandwich);
+        // sum all ingredients price
+        // create table sandwich with ingredients json
+        // sum all ingredients price
+        sandwichService.orderSandwich(sandwichRequest);
 
+        return ResponseEntity.ok().build();
     }
-
-    // get available ingredients to show to customer
-//    @GetMapping("/ingredients")
-//    public AvailableIngredients availableIngredients() {
-//
-//    }
-
-//    public Double verifyStock(Sandwich product) {
-//        return sandwichService.verifyStock(product);
-//    }
 }
