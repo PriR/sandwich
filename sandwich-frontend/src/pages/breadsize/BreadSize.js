@@ -1,68 +1,53 @@
 import { useState, useEffect } from "react";
-import "./Toppings.css";
+import "./BreadSize.css";
 import { ingredientsNames } from "../../commons/constants/ingredients";
+import { BrowserRouter as Router, Switch, Route, Link, withRouter } from "react-router-dom";
 import { getFormattedPrice } from "../../commons/utils/validations";
 
-export default function Toppings() {
+const BreadSize = props => {
 
-  //criar state ingredients
-
-  const [checkedState, setCheckedState] = useState(
-    new Array(3).fill(false)
-  );
+  const [checkedState, setCheckedState] = useState('');
 
   const [total, setTotal] = useState(0);
 
   const [appState, setAppState] = useState({
     loading: false,
-    toppings: null,
+    breadSize: null,
   });
 
   useEffect(() => {
+    console.log("props: ", props)
     setAppState({ loading: true });
-    // const toppings  = getIngredients();
-    fetch(`http://localhost:8080/ingredients?types=` + ingredientsNames.TOPPINGS)
+    fetch(`http://localhost:8080/ingredients?types=` + ingredientsNames.BREAD_SIZE)
       .then((response) => response.json())
       .then((data) => {
-        console.log('This is your data', data)
-        setAppState({ loading: false, toppings: data });
+        // console.log('This is your data', data)
+        setAppState({ loading: false, breadSize: data });
       });
   }, [setAppState]);
 
-  const handleOnChange = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-    setCheckedState(updatedCheckedState);
-    const totalPrice = updatedCheckedState.reduce(
-      (sum, currentState, index) => {
-        if (currentState === true) {
-          return sum + appState.toppings[index].price;
-        }
-        return sum;
-      },
-      0
-    );
-
-    setTotal(totalPrice);
+  const handleOnChange = (value) => {
+    const updatePrice = appState.breadSize.filter((item) => item.name === value);
+    setCheckedState(value);
+    setTotal(updatePrice[0].price);
   };
 
   return (
-    <div className="Toppings">
-      <h3>Select Toppings</h3>
+    <div className="BreadSize">
+      <h3>Select Bread Size</h3>
       <ul className="toppings-list">
-        {appState.toppings && appState.toppings.map(({ name, price }, index) => {
+        {appState.breadSize && appState.breadSize.map(({ name, price }, index) => {
           return (
             <li key={index}>
               <div className="toppings-list-item">
                 <div className="left-section">
                   <input
-                    type="checkbox"
+                    type="radio"
                     id={`custom-checkbox-${index}`}
                     name={name}
                     value={name}
-                    checked={checkedState[index]}
-                    onChange={() => handleOnChange(index)}
+                    checked={appState.breadSize[index].name === checkedState}
+                    onChange={(e) => handleOnChange(e.target.value)}
                   />
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
@@ -81,3 +66,5 @@ export default function Toppings() {
     </div>
   );
 }
+
+export default withRouter(BreadSize);
