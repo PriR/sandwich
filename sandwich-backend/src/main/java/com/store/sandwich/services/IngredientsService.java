@@ -11,7 +11,7 @@ public interface IngredientsService {
 
     List<Ingredients> getIngredients();
 
-    void updateStock(Integer id, UpdateIngredientQuantityRequest request);
+    void removeStock(Integer id, UpdateIngredientQuantityRequest request);
 
     Integer verifyStock(Integer id);
 

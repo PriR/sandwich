@@ -27,11 +27,11 @@ public class IngredientsController {
         return ingredientsService.getIngredients();
     }
 
-    // update ingredient stock by the quantity sent on request
+    // update ingredient stock by subtracting current stock by the quantity sent on request
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity updateStock(@PathVariable Integer id, @RequestBody UpdateIngredientQuantityRequest request) {
-        ingredientsService.updateStock(id, request);
+    public ResponseEntity removeStock(@PathVariable Integer id, @RequestBody UpdateIngredientQuantityRequest request) {
+        ingredientsService.removeStock(id, request);
         return ResponseEntity.ok().build();
     }
 

@@ -6,4 +6,5 @@ import lombok.Getter;
 public class UpdateIngredientQuantityRequest {
 
     Integer quantity;
+
 }
