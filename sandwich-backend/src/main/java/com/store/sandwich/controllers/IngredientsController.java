@@ -1,6 +1,8 @@
 package com.store.sandwich.controllers;
 
 import com.store.sandwich.dtos.*;
+import com.store.sandwich.exceptions.IngredientNotFoundException;
+import com.store.sandwich.exceptions.OutOfStockException;
 import com.store.sandwich.requests.UpdateIngredientQuantityRequest;
 import com.store.sandwich.services.IngredientsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,8 @@ public class IngredientsController {
     // update ingredient stock by subtracting current stock by the quantity sent on request
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity removeStock(@PathVariable Integer id, @RequestBody UpdateIngredientQuantityRequest request) {
-        ingredientsService.removeStock(id, request);
+    public ResponseEntity updateStock(@PathVariable Integer id, @RequestBody UpdateIngredientQuantityRequest request) throws OutOfStockException, IngredientNotFoundException {
+        ingredientsService.updateStock(id, request);
         return ResponseEntity.ok().build();
     }
 

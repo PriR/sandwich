@@ -23,9 +23,9 @@ VALUES ('Mayonnaise', 0.2, 10, 'sauces'),
 
 -- bread type
 INSERT INTO ingredients (name, price, quantity, ingredient_type)
-VALUES ('White', 1.0, 10, 'bread_type'),
-       ('Brown', 1.0, 10, 'bread_type'),
-       ('Special', 1.2, 10, 'bread_type');
+VALUES ('White', 1.0, 3, 'bread_type'),
+       ('Brown', 1.0, 3, 'bread_type'),
+       ('Special', 1.2, 3, 'bread_type');
 
 -- toppings
 INSERT INTO ingredients (name, price, quantity, ingredient_type)

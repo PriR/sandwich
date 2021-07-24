@@ -8,7 +8,6 @@ import com.store.sandwich.requests.UpdateIngredientQuantityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +28,18 @@ public class IngredientsServiceImpl implements IngredientsService {
     }
 
     @Override
-    public void removeStock(Integer id, UpdateIngredientQuantityRequest request) {
-        // verify current stock
-        // verify if stock will be > 0
-        // if yes, ok, let update stock
-        // if no, give message out of stock
+    public void updateStock(Integer id, UpdateIngredientQuantityRequest request) {
         Optional<Ingredients> ingredient = ingredientsRepository.findById(id);
         if (ingredient.isPresent()) {
-            Integer quantityToRemoveFromStock = request.getQuantity();
-            Integer newQuantity = Math.subtractExact(ingredient.get().getQuantity(), quantityToRemoveFromStock);
-            if (newQuantity > 0) {
-                ingredientsRepository.updateQuantity(id, newQuantity);
+            Integer requestQuantity = request.getQuantity();
+            if (UpdateIngredientQuantityRequest.Action.ADD.name().equals(request.getAction().toString())) {
+                Integer newQuantity = Math.addExact(ingredient.get().getQuantity(), requestQuantity);
+                addOnStock(id, newQuantity);
             } else {
-                throw new OutOfStockException(ingredient.get().getName());
+                Integer newQuantity = Math.subtractExact(ingredient.get().getQuantity(), requestQuantity);
+                removeFromStock(id, newQuantity, ingredient.get());
             }
         } else {
-            // throw exception ingredient doesn't exist
             throw new IngredientNotFoundException(id);
         }
     }
@@ -52,6 +47,18 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public Integer verifyStock(Integer id) {
         return ingredientsRepository.findById(id).get().getQuantity();
+    }
+
+    private void addOnStock(Integer id, Integer newQuantity) {
+        ingredientsRepository.updateQuantity(id, newQuantity);
+    }
+
+    private void removeFromStock(Integer id, Integer newQuantity, Ingredients ingredient) {
+        if (newQuantity > 0) {
+            ingredientsRepository.updateQuantity(id, newQuantity);
+        } else {
+            throw new OutOfStockException(ingredient.getName());
+        }
     }
 
 }
