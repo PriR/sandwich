@@ -1,21 +1,4 @@
-import { useState, useEffect } from "react";
-import { getStock } from "../../services/ingredientsService";
-
-export default function Stock() {
-  const [appState, setAppState] = useState({
-    loading: false,
-    stock: null,
-  });
-
-  useEffect(() => {
-    setAppState({ loading: true });
-    async function fetchData() {
-      const ingredients = await getStock();
-      setAppState({ loading: false, stock: ingredients });
-    }
-    fetchData();
-  }, [setAppState]);
-
+export default function Stock({ appState }) {
   return (
     <div className="items-stock">
       <div className="title-ingredient">Stock</div>
