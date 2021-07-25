@@ -48,35 +48,33 @@ export default function Toppings() {
   return (
     <div className="items">
       <div className="title-ingredient">Toppings</div>
-        {appState.toppings &&
-          appState.toppings.map(({ name, price }, index) => {
-            return (
-              <div key={index}>
-                <div className="item-list">
-                  <div className="item-checkname">
-                    <input
-                      type="checkbox"
-                      id={`custom-checkbox-${index}`}
-                      name={name}
-                      value={name}
-                      checked={checkedState[index]}
-                      onChange={() => handleOnChange(index)}
-                    />
-                    <label htmlFor={`custom-checkbox-${index}`}>
-                      {name}
-                  </label>
-                  </div>
-                  <div className="item-price">{getFormattedPrice(price)}</div>
+      {appState.toppings &&
+        appState.toppings.map(({ name, price }, index) => {
+          return (
+            <div key={index}>
+              <div className="item-list">
+                <div className="item-checkname">
+                  <input
+                    type="checkbox"
+                    id={`custom-checkbox-${index}`}
+                    name={name}
+                    value={name}
+                    checked={checkedState[index]}
+                    onChange={() => handleOnChange(index)}
+                  />
+                  <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
+                <div className="item-price">{getFormattedPrice(price)}</div>
               </div>
-            );
-          })}
-        <div>
-          <div className="item-list">
-            <div className="item-price">Total:</div>
-            <div className="item-price">{getFormattedPrice(total)}</div>
-          </div>
+            </div>
+          );
+        })}
+      <div>
+        <div className="item-list">
+          <div className="item-price">Total:</div>
+          <div className="item-price">{getFormattedPrice(total)}</div>
         </div>
+      </div>
     </div>
   );
 }

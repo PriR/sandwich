@@ -43,18 +43,18 @@ const BreadSize = (props) => {
       {appState.breadSize &&
         appState.breadSize.map(({ name, price, quantity }, index) => {
           return (
-            <div className="container" key={index}>
+            <div key={index}>
               <div className="item-list">
-              <div className="item-checkname">
-                <input
-                  type="radio"
-                  id={`custom-checkbox-${index}`}
-                  name={name}
-                  value={name}
-                  checked={appState.breadSize[index].name === checkedState}
-                  onChange={(e) => handleOnChange(e.target.value)}
-                />
-                <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                <div className="item-checkname">
+                  <input
+                    type="radio"
+                    id={`custom-checkbox-${index}`}
+                    name={name}
+                    value={name}
+                    checked={appState.breadSize[index].name === checkedState}
+                    onChange={(e) => handleOnChange(e.target.value)}
+                  />
+                  <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
                 <div className="item-price">{getFormattedPrice(price)}</div>
               </div>

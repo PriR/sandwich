@@ -17,24 +17,21 @@ export default function Stock() {
   }, [setAppState]);
 
   return (
-    <div>
-      <h3>Stock</h3>
-      <ul className="toppings-list">
-        {appState.sauces &&
-          appState.sauces.map(({ name, price, quantity }, index) => {
-            return (
-              <li key={index}>
-                <div className="toppings-list-item">
-                  <div>
-                    <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
-                  </div>
-                  <div>{quantity}</div>
-                  <div>{getFormattedPrice(price)}</div>
+    <div className="items-stock">
+      <div className="title-ingredient">Stock</div>
+      {appState.sauces &&
+        appState.sauces.map(({ name, quantity }, index) => {
+          return (
+            <div key={index}>
+              <div className="item-list">
+                <div className="item-checkname">
+                  <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
-              </li>
-            );
-          })}
-      </ul>
+                <div>{quantity}</div>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 }

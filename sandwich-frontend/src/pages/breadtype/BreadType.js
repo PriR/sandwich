@@ -77,11 +77,11 @@ const BreadType = (props) => {
   return (
     <div className="items">
       <div className="title-ingredient">Bread Type</div>
-        {appState.breadtype &&
-          appState.breadtype.map(({ id, name, price, quantity }, index) => {
-            return (
-              <div className="container" key={id}>
-                <div className="item-list">
+      {appState.breadtype &&
+        appState.breadtype.map(({ id, name, price, quantity }, index) => {
+          return (
+            <div key={id}>
+              <div className="item-list">
                 <div className="item-checkname">
                   {quantity > 0 && (
                     <input
@@ -94,20 +94,20 @@ const BreadType = (props) => {
                     />
                   )}
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
-                  </div>
-                  <div className="item-price">
-                    {getFormattedPrice(price, quantity, false)}
-                  </div>
+                </div>
+                <div className="item-price">
+                  {getFormattedPrice(price, quantity, false)}
                 </div>
               </div>
-            );
-          })}
-        <div>
-          <div className="item-list">
-            <div className="item-price">Total:</div>
-            <div className="item-price">{getFormattedPrice(total)}</div>
-          </div>
+            </div>
+          );
+        })}
+      <div>
+        <div className="item-list">
+          <div className="item-price">Total:</div>
+          <div className="item-price">{getFormattedPrice(total)}</div>
         </div>
+      </div>
     </div>
   );
 };

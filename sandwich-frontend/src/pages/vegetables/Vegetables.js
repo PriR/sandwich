@@ -47,11 +47,11 @@ export default function Vegetables() {
   return (
     <div className="items">
       <div className="title-ingredient">Vegetables</div>
-        {appState.vegetables &&
-          appState.vegetables.map(({ name, price }, index) => {
-            return (
-              <div key={index}>
-                <div className="item-list">
+      {appState.vegetables &&
+        appState.vegetables.map(({ name, price }, index) => {
+          return (
+            <div key={index}>
+              <div className="item-list">
                 <div className="item-checkname">
                   <input
                     type="checkbox"
@@ -62,20 +62,18 @@ export default function Vegetables() {
                     onChange={() => handleOnChange(index)}
                   />
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
-                  </div>
-                  <div className="item-price">
-                    {getFormattedPrice(price)}
-                  </div>
                 </div>
+                <div className="item-price">{getFormattedPrice(price)}</div>
               </div>
-            );
-          })}
-        <div>
-          <div className="item-list">
-            <div className="item-price">Total:</div>
-            <div className="item-price">{getFormattedPrice(total)}</div>
-          </div>
+            </div>
+          );
+        })}
+      <div>
+        <div className="item-list">
+          <div className="item-price">Total:</div>
+          <div className="item-price">{getFormattedPrice(total)}</div>
         </div>
+      </div>
     </div>
   );
 }

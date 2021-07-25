@@ -21,7 +21,9 @@ function App() {
           <Vegetables />
           <Sauces />
         </div>
-        <Stock />
+        <div className="sandwich-container">
+          <Stock />
+        </div>
       </Router>
     </div>
   );
