@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ingredientsNames } from "../../commons/constants/ingredients";
 import { getFormattedPrice } from "../../commons/utils/validations";
 
-export default function Toppings() {
+export default function Vegetables() {
   //criar state ingredients
 
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
@@ -11,19 +11,18 @@ export default function Toppings() {
 
   const [appState, setAppState] = useState({
     loading: false,
-    toppings: null,
+    vegetables: null,
   });
 
   useEffect(() => {
     setAppState({ loading: true });
-    // const toppings  = getIngredients();
     fetch(
-      `http://localhost:8080/ingredients?types=` + ingredientsNames.TOPPINGS
+      `http://localhost:8080/ingredients?types=` + ingredientsNames.VEGETABLES
     )
       .then((response) => response.json())
       .then((data) => {
         console.log("This is your data", data);
-        setAppState({ loading: false, toppings: data });
+        setAppState({ loading: false, vegetables: data });
       });
   }, [setAppState]);
 
@@ -35,7 +34,7 @@ export default function Toppings() {
     const totalPrice = updatedCheckedState.reduce(
       (sum, currentState, index) => {
         if (currentState === true) {
-          return sum + appState.toppings[index].price;
+          return sum + appState.vegetables[index].price;
         }
         return sum;
       },
@@ -46,29 +45,26 @@ export default function Toppings() {
   };
 
   return (
-    <div className="items">
-      <div className="title-ingredient">Toppings</div>
-        {appState.toppings &&
-          appState.toppings.map(({ name, price }, index) => {
+    <div className="ingredient">
+      <div className="title-ingredient">Vegetables</div>
+      <div>
+        {appState.vegetables &&
+          appState.vegetables.map(({ name, price }, index) => {
             return (
               <div key={index}>
                 <div className="item-list">
-                  <div className="item-checkname">
-                    <input
-                      type="checkbox"
-                      id={`custom-checkbox-${index}`}
-                      name={name}
-                      value={name}
-                      checked={checkedState[index]}
-                      onChange={() => handleOnChange(index)}
-                    />
-                    <label
-                      htmlFor={`custom-checkbox-${index}`}
-                    >
-                      {name}
-                  </label>
+                  <input
+                    type="checkbox"
+                    id={`custom-checkbox-${index}`}
+                    name={name}
+                    value={name}
+                    checked={checkedState[index]}
+                    onChange={() => handleOnChange(index)}
+                  />
+                  <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                  <div className="right-section">
+                    {getFormattedPrice(price)}
                   </div>
-                  <div className="item-price">{getFormattedPrice(price)}</div>
                 </div>
               </div>
             );
@@ -79,6 +75,7 @@ export default function Toppings() {
             <div className="item-price">{getFormattedPrice(total)}</div>
           </div>
         </div>
+      </div>
     </div>
   );
 }

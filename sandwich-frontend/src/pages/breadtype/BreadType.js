@@ -1,126 +1,115 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./BreadType.css";
 import { ingredientsNames } from "../../commons/constants/ingredients";
-import BreadSize from "../breadsize/BreadSize";
-import { getIngredients } from "../../services/ingredientsService";
+import {
+  getIngredients,
+  removeStock,
+  addStock,
+} from "../../services/ingredientsService";
 import { getFormattedPrice } from "../../commons/utils/validations";
+import { usePrevious } from "../utils/utils";
 
-const BreadType = props => {
+const BreadType = (props) => {
   const [checkedState, setCheckedState] = useState("");
   const [total, setTotal] = useState(0);
-  const [appState, setAppState] = useState({
-    loading: false,
-    breadtype: null,
-  });
+  const prevCheckedState = usePrevious(checkedState);
+  const [appState, setAppState] = useState({ loading: false, breadtype: null });
 
   useEffect(() => {
     setAppState({ loading: true });
     async function fetchData() {
       const ingredients = await getIngredients(ingredientsNames.BREAD_TYPE);
-      console.log("ing: ", ingredients)
+      console.log("ing: ", ingredients);
       setAppState({ loading: false, breadtype: ingredients });
     }
     fetchData();
   }, [setAppState]);
 
-  const handleOnChange = (value) => {
+  const handleOnChange = ({ value, id, quantity }) => {
+    console.log("q: ", quantity);
     const updatePrice = appState.breadtype.filter(
       (item) => item.name === value
     );
-    setCheckedState(value);
-    setTotal(updatePrice[0].price);
+
+    async function updateStock() {
+      await removeStock(id, 1)
+        .then((ingredients) => {
+          setCheckedState(value);
+          setTotal(updatePrice[0].price);
+          console.log("voltou remove");
+          // put back ingredient into stock
+          async function add() {
+            if (prevCheckedState) {
+              console.log("entrou");
+              await addStock(prevCheckedState, 1)
+                .then((ingredients) => {
+                  setCheckedState(value);
+                  setTotal(updatePrice[0].price);
+                  console.log("voltou add");
+                })
+                .catch((e) => {
+                  console.log("error: ", e);
+                });
+            }
+          }
+          add();
+        })
+        .catch((e) => {
+          console.log("error: ", e);
+        });
+    }
+
+    async function fetchData() {
+      const ingredients = await getIngredients(ingredientsNames.BREAD_TYPE);
+      console.log("ing: ", ingredients);
+      console.log("voltou fetch on change");
+      setAppState({ loading: false, breadtype: ingredients });
+    }
+
+    async function refreshData() {
+      await updateStock();
+      await fetchData();
+    }
+    refreshData();
   };
 
   return (
-    <div className="BreadType">
-      <h3>Select Bread Type</h3>
-      <ul className="toppings-list">
-        {appState.breadtype &&
-          appState.breadtype.map(({ name, price, quantity }, index) => {
-            return (
-              <li key={index}>
-                <div className="toppings-list-item">
-                  <div className="left-section">
-                    {quantity > 0 && (
-                      <input
-                        type="radio"
-                        id={`custom-checkbox-${index}`}
-                        name={name}
-                        value={name}
-                        checked={
-                          appState.breadtype[index].name === checkedState
-                        }
-                        onChange={(e) => handleOnChange(e.target.value)}
-                      />
-                    )}
-                    <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
-                  </div>
-                  <div className="right-section">
-                    {getFormattedPrice(price, quantity)}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        <li>
-          <div className="toppings-list-item">
-            <div className="left-section">Total:</div>
-            <div className="right-section">{getFormattedPrice(total)}</div>
-          </div>
-        </li>
-      </ul>
-
-      <ul className="toppings-list">
-        {appState.breadtype &&
-          appState.breadtype.map(({ name, price, quantity }, index) => {
-            return (
-              <li key={index}>
-                <div className="toppings-list-item">
-                  <div className="right-section">{name}</div>
-                  <div className="right-section">{price}</div>
-                  <div className="right-section">{quantity}</div>
-                </div>
-              </li>
-            );
-          })}
-        <li>
-          <div className="toppings-list-item">
-            <div className="left-section">Total:</div>
-            <div className="right-section">{getFormattedPrice(total)}</div>
-          </div>
-        </li>
-      </ul>
-
+    <div>
+      <div className="title-ingredient">Bread Type</div>
       <div>
-        <button>
-          
-        </button>
-        {/* <Router>
-          <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link
-                    to={{
-                      pathname: "/breadsize",
-                      state: { message: "hello, im a passed message!" },
-                    }}
-                  >
-                    Bread Size
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-            <Switch>
-              <Route exact path="/breadsize" component={BreadSize}></Route>
-            </Switch>
+        {appState.breadtype &&
+          appState.breadtype.map(({ id, name, price, quantity }, index) => {
+            return (
+              <div className="container" key={id}>
+                <div className="item-list">
+                  {quantity > 0 && (
+                    <input
+                      type="radio"
+                      id={id}
+                      name={name}
+                      value={name}
+                      checked={appState.breadtype[index].name === checkedState}
+                      onChange={(e) => handleOnChange(e.target)}
+                    />
+                  )}
+                  <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                  <div className="item-price">
+                    {getFormattedPrice(price, quantity, false)}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        <div>
+          <div className="item-list">
+            <div className="item-price">Total:</div>
+            <div className="item-price">{getFormattedPrice(total)}</div>
           </div>
-        </Router> */}
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default withRouter(BreadType);
-

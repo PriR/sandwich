@@ -1,4 +1,5 @@
 const getFormattedPrice = (price, quantity) => {
+  // console.log("current: ", current);
   if (quantity === 0) {
     return "Out of stock";
   }
