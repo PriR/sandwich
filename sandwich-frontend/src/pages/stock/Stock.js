@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getFormattedPrice } from "../../commons/utils/validations";
+import { getStock } from "../../services/ingredientsService";
 
 export default function Stock() {
   const [appState, setAppState] = useState({
@@ -9,18 +9,18 @@ export default function Stock() {
 
   useEffect(() => {
     setAppState({ loading: true });
-    fetch(`http://localhost:8080/ingredients`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAppState({ loading: false, sauces: data });
-      });
+    async function fetchData() {
+      const ingredients = await getStock();
+      setAppState({ loading: false, stock: ingredients });
+    }
+    fetchData();
   }, [setAppState]);
 
   return (
     <div className="items-stock">
       <div className="title-ingredient">Stock</div>
-      {appState.sauces &&
-        appState.sauces.map(({ name, quantity }, index) => {
+      {appState.stock &&
+        appState.stock.map(({ name, quantity }, index) => {
           return (
             <div key={index}>
               <div className="item-list">

@@ -31,4 +31,13 @@ const addStock = async (name, quantity) => {
   }
 }
 
-export { getIngredients, removeStock, addStock }
+const getStock = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/ingredients`);
+    return response.data;
+  } catch (e) {
+    console.log("e: ", e);
+  }
+}
+
+export { getIngredients, removeStock, addStock, getStock }
