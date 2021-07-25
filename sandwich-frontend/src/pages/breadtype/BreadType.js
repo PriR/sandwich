@@ -75,14 +75,14 @@ const BreadType = (props) => {
   };
 
   return (
-    <div>
+    <div className="items">
       <div className="title-ingredient">Bread Type</div>
-      <div>
         {appState.breadtype &&
           appState.breadtype.map(({ id, name, price, quantity }, index) => {
             return (
               <div className="container" key={id}>
                 <div className="item-list">
+                <div className="item-checkname">
                   {quantity > 0 && (
                     <input
                       type="radio"
@@ -94,6 +94,7 @@ const BreadType = (props) => {
                     />
                   )}
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                  </div>
                   <div className="item-price">
                     {getFormattedPrice(price, quantity, false)}
                   </div>
@@ -107,7 +108,6 @@ const BreadType = (props) => {
             <div className="item-price">{getFormattedPrice(total)}</div>
           </div>
         </div>
-      </div>
     </div>
   );
 };

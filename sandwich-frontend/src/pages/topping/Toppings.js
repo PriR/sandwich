@@ -62,9 +62,7 @@ export default function Toppings() {
                       checked={checkedState[index]}
                       onChange={() => handleOnChange(index)}
                     />
-                    <label
-                      htmlFor={`custom-checkbox-${index}`}
-                    >
+                    <label htmlFor={`custom-checkbox-${index}`}>
                       {name}
                   </label>
                   </div>

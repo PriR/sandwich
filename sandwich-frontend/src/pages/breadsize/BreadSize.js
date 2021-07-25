@@ -38,13 +38,14 @@ const BreadSize = (props) => {
   };
 
   return (
-    <div className="ingredient">
+    <div className="items">
       <div className="title-ingredient">Bread Size</div>
       {appState.breadSize &&
         appState.breadSize.map(({ name, price, quantity }, index) => {
           return (
             <div className="container" key={index}>
               <div className="item-list">
+              <div className="item-checkname">
                 <input
                   type="radio"
                   id={`custom-checkbox-${index}`}
@@ -54,6 +55,7 @@ const BreadSize = (props) => {
                   onChange={(e) => handleOnChange(e.target.value)}
                 />
                 <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
+                </div>
                 <div className="item-price">{getFormattedPrice(price)}</div>
               </div>
             </div>
