@@ -63,15 +63,15 @@ export default function Vegetables() {
                   />
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
-                <div className="item-price">{getFormattedPrice(price)}</div>
+                <div className="item-highlight">{getFormattedPrice(price)}</div>
               </div>
             </div>
           );
         })}
       <div>
         <div className="item-list">
-          <div className="item-price">Total:</div>
-          <div className="item-price">{getFormattedPrice(total)}</div>
+          <div className="item-highlight">Total:</div>
+          <div className="item-highlight">{getFormattedPrice(total)}</div>
         </div>
       </div>
     </div>

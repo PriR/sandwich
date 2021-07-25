@@ -27,7 +27,7 @@ export default function Stock() {
                 <div className="item-checkname">
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
-                <div>{quantity}</div>
+                <div className="item-highlight">{quantity}</div>
               </div>
             </div>
           );

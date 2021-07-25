@@ -95,7 +95,7 @@ const BreadType = (props) => {
                   )}
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
-                <div className="item-price">
+                <div className="item-highlight">
                   {getFormattedPrice(price, quantity, false)}
                 </div>
               </div>
@@ -104,8 +104,8 @@ const BreadType = (props) => {
         })}
       <div>
         <div className="item-list">
-          <div className="item-price">Total:</div>
-          <div className="item-price">{getFormattedPrice(total)}</div>
+          <div className="item-highlight">Total:</div>
+          <div className="item-highlight">{getFormattedPrice(total)}</div>
         </div>
       </div>
     </div>
