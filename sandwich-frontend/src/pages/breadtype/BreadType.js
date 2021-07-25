@@ -1,40 +1,20 @@
 import { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import "./BreadType.css";
-import { ingredientsNames } from "../../commons/constants/ingredients";
-import {
-  getIngredients,
-  removeStock,
-  addStock,
-} from "../../services/ingredientsService";
+import { removeStock, addStock } from "../../services/ingredientsService";
 import { getFormattedPrice } from "../../commons/utils/validations";
 import { usePrevious } from "../utils/utils";
 
-const BreadType = (props) => {
+const BreadType = ({ breadType }) => {
   const [checkedState, setCheckedState] = useState("");
   const [total, setTotal] = useState(0);
   const prevCheckedState = usePrevious(checkedState);
-  const [appState, setAppState] = useState({ loading: false, breadtype: null });
-
-  useEffect(() => {
-    setAppState({ loading: true });
-    async function fetchData() {
-      const ingredients = await getIngredients(ingredientsNames.BREAD_TYPE);
-      console.log("ing: ", ingredients);
-      setAppState({ loading: false, breadtype: ingredients });
-    }
-    fetchData();
-  }, [setAppState]);
 
   const handleOnChange = ({ value, id, quantity }) => {
-    console.log("q: ", quantity);
-    const updatePrice = appState.breadtype.filter(
-      (item) => item.name === value
-    );
+    const updatePrice = breadType.filter((item) => item.name === value);
 
     async function updateStock() {
       await removeStock(id, 1)
-        .then((ingredients) => {
+        .then(() => {
           setCheckedState(value);
           setTotal(updatePrice[0].price);
           console.log("voltou remove");
@@ -43,7 +23,7 @@ const BreadType = (props) => {
             if (prevCheckedState) {
               console.log("entrou");
               await addStock(prevCheckedState, 1)
-                .then((ingredients) => {
+                .then(() => {
                   setCheckedState(value);
                   setTotal(updatePrice[0].price);
                   console.log("voltou add");
@@ -60,16 +40,16 @@ const BreadType = (props) => {
         });
     }
 
-    async function fetchData() {
-      const ingredients = await getIngredients(ingredientsNames.BREAD_TYPE);
-      console.log("ing: ", ingredients);
-      console.log("voltou fetch on change");
-      setAppState({ loading: false, breadtype: ingredients });
-    }
+    // async function fetchData() {
+    //   const ingredients = await getIngredients(ingredientsNames.BREAD_TYPE);
+    //   console.log("ing: ", ingredients);
+    //   console.log("voltou fetch on change");
+    //   setAppState({ loading: false, breadtype: ingredients });
+    // }
 
     async function refreshData() {
       await updateStock();
-      await fetchData();
+      // await fetchData();
     }
     refreshData();
   };
@@ -77,8 +57,8 @@ const BreadType = (props) => {
   return (
     <div className="items">
       <div className="title-ingredient">Bread Type</div>
-      {appState.breadtype &&
-        appState.breadtype.map(({ id, name, price, quantity }, index) => {
+      {breadType &&
+        breadType.map(({ id, name, price, quantity }, index) => {
           return (
             <div key={id}>
               <div className="item-list">
@@ -89,7 +69,7 @@ const BreadType = (props) => {
                       id={id}
                       name={name}
                       value={name}
-                      checked={appState.breadtype[index].name === checkedState}
+                      checked={breadType[index].name === checkedState}
                       onChange={(e) => handleOnChange(e.target)}
                     />
                   )}

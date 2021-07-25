@@ -1,31 +1,10 @@
 import { useState, useEffect } from "react";
-import { ingredientsNames } from "../../commons/constants/ingredients";
 import { getFormattedPrice } from "../../commons/utils/validations";
+import { withRouter } from "react-router-dom";
 
-export default function Toppings() {
-  //criar state ingredients
-
+const Toppings = ({toppings}) => {
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
-
   const [total, setTotal] = useState(0);
-
-  const [appState, setAppState] = useState({
-    loading: false,
-    toppings: null,
-  });
-
-  useEffect(() => {
-    setAppState({ loading: true });
-    // const toppings  = getIngredients();
-    fetch(
-      `http://localhost:8080/ingredients?types=` + ingredientsNames.TOPPINGS
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("This is your data", data);
-        setAppState({ loading: false, toppings: data });
-      });
-  }, [setAppState]);
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
@@ -35,21 +14,20 @@ export default function Toppings() {
     const totalPrice = updatedCheckedState.reduce(
       (sum, currentState, index) => {
         if (currentState === true) {
-          return sum + appState.toppings[index].price;
+          return sum + toppings[index].price;
         }
         return sum;
       },
       0
     );
-
     setTotal(totalPrice);
   };
 
   return (
     <div className="items">
       <div className="title-ingredient">Toppings</div>
-      {appState.toppings &&
-        appState.toppings.map(({ name, price }, index) => {
+      {toppings &&
+        toppings.map(({ name, price }, index) => {
           return (
             <div key={index}>
               <div className="item-list">
@@ -78,3 +56,5 @@ export default function Toppings() {
     </div>
   );
 }
+
+export default withRouter(Toppings);

@@ -1,30 +1,10 @@
 import { useState, useEffect } from "react";
-import { ingredientsNames } from "../../commons/constants/ingredients";
 import { getFormattedPrice } from "../../commons/utils/validations";
+import { withRouter } from "react-router-dom";
 
-export default function Vegetables() {
-  //criar state ingredients
-
+const Vegetables = ({vegetables}) => {
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
-
   const [total, setTotal] = useState(0);
-
-  const [appState, setAppState] = useState({
-    loading: false,
-    vegetables: null,
-  });
-
-  useEffect(() => {
-    setAppState({ loading: true });
-    fetch(
-      `http://localhost:8080/ingredients?types=` + ingredientsNames.VEGETABLES
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("This is your data", data);
-        setAppState({ loading: false, vegetables: data });
-      });
-  }, [setAppState]);
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
@@ -34,7 +14,7 @@ export default function Vegetables() {
     const totalPrice = updatedCheckedState.reduce(
       (sum, currentState, index) => {
         if (currentState === true) {
-          return sum + appState.vegetables[index].price;
+          return sum + vegetables[index].price;
         }
         return sum;
       },
@@ -47,8 +27,8 @@ export default function Vegetables() {
   return (
     <div className="items">
       <div className="title-ingredient">Vegetables</div>
-      {appState.vegetables &&
-        appState.vegetables.map(({ name, price }, index) => {
+      {vegetables &&
+        vegetables.map(({ name, price }, index) => {
           return (
             <div key={index}>
               <div className="item-list">
@@ -77,3 +57,5 @@ export default function Vegetables() {
     </div>
   );
 }
+
+export default withRouter(Vegetables);

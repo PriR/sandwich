@@ -1,36 +1,13 @@
 import { useState, useEffect } from "react";
-import { ingredientsNames } from "../../commons/constants/ingredients";
 import { withRouter } from "react-router-dom";
 import { getFormattedPrice } from "../../commons/utils/validations";
 
-const BreadSize = (props) => {
+const BreadSize = ({breadSize}) => {
   const [checkedState, setCheckedState] = useState("");
-
   const [total, setTotal] = useState(0);
 
-  const [appState, setAppState] = useState({
-    loading: false,
-    breadSize: null,
-  });
-
-  useEffect(
-    (props) => {
-      console.log("props: ", props);
-      setAppState({ loading: true });
-      fetch(
-        `http://localhost:8080/ingredients?types=` + ingredientsNames.BREAD_SIZE
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          // console.log('This is your data', data)
-          setAppState({ loading: false, breadSize: data });
-        });
-    },
-    [setAppState]
-  );
-
   const handleOnChange = (value) => {
-    const updatePrice = appState.breadSize.filter(
+    const updatePrice = breadSize.filter(
       (item) => item.name === value
     );
     setCheckedState(value);
@@ -40,8 +17,8 @@ const BreadSize = (props) => {
   return (
     <div className="items">
       <div className="title-ingredient">Bread Size</div>
-      {appState.breadSize &&
-        appState.breadSize.map(({ name, price, quantity }, index) => {
+      {breadSize &&
+        breadSize.map(({ name, price, quantity }, index) => {
           return (
             <div key={index}>
               <div className="item-list">
@@ -51,7 +28,7 @@ const BreadSize = (props) => {
                     id={`custom-checkbox-${index}`}
                     name={name}
                     value={name}
-                    checked={appState.breadSize[index].name === checkedState}
+                    checked={breadSize[index].name === checkedState}
                     onChange={(e) => handleOnChange(e.target.value)}
                   />
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>

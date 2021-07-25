@@ -1,28 +1,10 @@
 import { useState, useEffect } from "react";
-import { ingredientsNames } from "../../commons/constants/ingredients";
 import { getFormattedPrice } from "../../commons/utils/validations";
+import { withRouter } from "react-router-dom";
 
-export default function Sauces() {
-  //criar state ingredients
-
+const Sauces = ({sauces}) => {
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
-
   const [total, setTotal] = useState(0);
-
-  const [appState, setAppState] = useState({
-    loading: false,
-    sauces: null,
-  });
-
-  useEffect(() => {
-    setAppState({ loading: true });
-    fetch(`http://localhost:8080/ingredients?types=` + ingredientsNames.SAUCES)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("This is your data", data);
-        setAppState({ loading: false, sauces: data });
-      });
-  }, [setAppState]);
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
@@ -32,21 +14,20 @@ export default function Sauces() {
     const totalPrice = updatedCheckedState.reduce(
       (sum, currentState, index) => {
         if (currentState === true) {
-          return sum + appState.sauces[index].price;
+          return sum + sauces[index].price;
         }
         return sum;
       },
       0
     );
-
     setTotal(totalPrice);
   };
 
   return (
     <div className="items">
       <div className="title-ingredient">Sauces</div>
-      {appState.sauces &&
-        appState.sauces.map(({ name, price }, index) => {
+      {sauces &&
+        sauces.map(({ name, price }, index) => {
           return (
             <div key={index}>
               <div className="item-list">
@@ -75,3 +56,5 @@ export default function Sauces() {
     </div>
   );
 }
+
+export default withRouter(Sauces);
