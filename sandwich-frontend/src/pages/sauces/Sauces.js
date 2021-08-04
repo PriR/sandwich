@@ -27,7 +27,7 @@ const Sauces = ({sauces}) => {
     <div className="items">
       <div className="title-ingredient">Sauces</div>
       {sauces &&
-        sauces.map(({ name, price }, index) => {
+        sauces.map(({ name, price, quantity }, index) => {
           return (
             <div key={index}>
               <div className="item-list">
@@ -42,7 +42,7 @@ const Sauces = ({sauces}) => {
                   />
                   <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                 </div>
-                <div className="item-highlight">{getFormattedPrice(price)}</div>
+                <div className="item-highlight">{getFormattedPrice(price, quantity)}</div>
               </div>
             </div>
           );

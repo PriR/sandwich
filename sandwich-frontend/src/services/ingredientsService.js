@@ -2,50 +2,32 @@ import axios from "axios";
 import { ingredientsNamesId } from "./ingredientsNameId";
 
 const getIngredients = async (ingredientType) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:8080/ingredients?types=${ingredientType}`
-    );
-    return response.data;
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  const response = await axios.get(`http://localhost:8080/ingredients?types=${ingredientType}`);
+  return response.data;
 };
 
 const removeStock = async (id, quantity) => {
   const body = { quantity: quantity, action: "REMOVE" };
-  try {
-    const response = await axios.put(
-      `http://localhost:8080/ingredients/${id}`,
-      body
-    );
-    return response.data;
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  const response = await axios.put(
+    `http://localhost:8080/ingredients/${id}`,
+    body
+  );
+  return response.data;
 };
 
 const addStock = async (name, quantity) => {
   const id = ingredientsNamesId[name];
   const body = { quantity: quantity, action: "ADD" };
-  try {
-    const response = await axios.put(
-      `http://localhost:8080/ingredients/${id}`,
-      body
-    );
-    return response.data;
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  const response = await axios.put(
+    `http://localhost:8080/ingredients/${id}`,
+    body
+  );
+  return response.data;
 };
 
-const getStock = async () => {
-  try {
-    const response = await axios.get(`http://localhost:8080/ingredients`);
-    return response.data;
-  } catch (e) {
-    console.log("e: ", e);
-  }
+const getIngredientsStock = async () => {
+  const response = await axios.get(`http://localhost:8080/ingredients`);
+  return response.data;
 };
 
-export { getIngredients, removeStock, addStock, getStock };
+export { getIngredients, removeStock, addStock, getIngredientsStock };
